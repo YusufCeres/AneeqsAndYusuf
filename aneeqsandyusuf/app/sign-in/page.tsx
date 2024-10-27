@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
 import Link from 'next/link'; // Import Link from Next.js
+import  router, { useRouter } from 'next/router';
 
 function SignIn() {
   const [email, setEmail] = useState('');
@@ -18,6 +19,7 @@ function SignIn() {
       // Clear fields after sign in
       setEmail('');
       setPassword('');
+      router.push('/');
     } catch (error) {
       console.error(error);
     }
