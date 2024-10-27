@@ -4,6 +4,7 @@ import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
 import Link from 'next/link'; // Import Link from Next.js
 import  router, { useRouter } from 'next/router';
+//import {useSession} from 'next-auth/react'
 
 function SignIn() {
   const [email, setEmail] = useState('');

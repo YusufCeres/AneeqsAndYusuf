@@ -1,41 +1,28 @@
-'use client'
-import  { useState } from 'react';
-import {useCreateUserWithEmailAndPassword} from 'react-firebase-hooks/auth'
-import {auth} from '@/app/firebase/config'
+'use client';
+import { useState } from 'react';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { auth } from '@/app/firebase/config';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation'; // Use next/navigation instead of next/router
 
 function SignUp() {
-  const[email,setEmail] = useState('');
-  const[password,setPassword] = useState('');
-    
-  const[createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth);
-  // State for controlled inputs
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-  });
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [createUserWithEmailAndPassword] = useCreateUserWithEmailAndPassword(auth);
+  const router = useRouter(); // This should work correctly now
 
-  // Update form state
-  const handleChange = (e: { target: { name: any; value: any; }; }) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
-  };
-
-  
-  const handleSignup = async() =>{
+  const handleSignup = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault(); // Prevent form from refreshing the page
     try {
-      const res = await createUserWithEmailAndPassword(email,password)
-      console.log({res})
+      const res = await createUserWithEmailAndPassword(email, password);
+      console.log({ res });
       setEmail('');
       setPassword('');
+      router.push('/sign-in'); // Use router.push to navigate after successful sign up
     } catch (e) {
-      console.error(e)
+      console.error(e);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-pink-100">
@@ -43,31 +30,14 @@ function SignUp() {
         <h1 className="text-3xl font-bold text-center text-pink-600 mb-6">💕 Welcome to my love token 💕</h1>
         <form onSubmit={handleSignup} className="space-y-6">
           <div>
-            <label className="block text-pink-600 font-medium mb-2" htmlFor="name">
-              Name
-            </label>
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="Your Name"
-              className="w-full p-3 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
-              required
-            />
-          </div>
-
-          <div>
             <label className="block text-pink-600 font-medium mb-2" htmlFor="email">
               Email
             </label>
             <input
               type="email"
               id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Your Email"
               className="w-full p-3 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
               required
@@ -81,9 +51,8 @@ function SignUp() {
             <input
               type="password"
               id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="Your Password"
               className="w-full p-3 border border-pink-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500"
               required
