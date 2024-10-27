@@ -2,6 +2,7 @@
 import  { useState } from 'react';
 import {useCreateUserWithEmailAndPassword} from 'react-firebase-hooks/auth'
 import {auth} from '@/app/firebase/config'
+import Link from 'next/link';
 
 function SignUp() {
   const[email,setEmail] = useState('');
@@ -96,6 +97,9 @@ function SignUp() {
             Sign Up
           </button>
         </form>
+        <p className="mt-4 text-center text-pink-600">
+          Already have an account? <Link href="/sign-in" className="underline text-pink-800">Sign In</Link>
+        </p>
       </div>
     </div>
   );

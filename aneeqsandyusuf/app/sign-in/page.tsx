@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth } from '@/app/firebase/config';
+import Link from 'next/link'; // Import Link from Next.js
 
 function SignIn() {
   const [email, setEmail] = useState('');
@@ -65,7 +66,7 @@ function SignIn() {
           </button>
         </form>
         <p className="mt-4 text-center text-pink-600">
-          Don't have an account? <a href="/signup" className="underline text-pink-800">Sign Up</a>
+          Don't have an account? <Link href="/sign-up" className="underline text-pink-800">Sign Up</Link>
         </p>
       </div>
     </div>
