@@ -11,7 +11,7 @@ export default function Home() {
 
   useEffect(() => {
     if (!user) {
-      return router.push('/sign-up'); // Redirects to sign-up if the user is not authenticated
+      return router.push('/sign-in'); // Redirects to sign-in if the user is not authenticated
     }
   }, [user, router]);
 

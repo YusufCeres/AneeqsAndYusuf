@@ -1,38 +1,57 @@
-'use client';
-import { useState } from 'react';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { auth } from '@/app/firebase/config';
-import Link from 'next/link'; // Import Link from Next.js
-import { useRouter } from 'next/navigation';
+"use client";
+import { useState } from "react";
+import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
+import { auth } from "@/app/firebase/config";
+import { useRouter } from "next/navigation";
 //import {useSession} from 'next-auth/react'
 
 function SignIn() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const router = useRouter();
   const [signInWithEmailAndPassword] = useSignInWithEmailAndPassword(auth);
 
-  const handleSignIn = async (e: { preventDefault: () => void; }) => {
+  const allowedEmails = [
+    "ceresyusuf@gmail.com",
+    "aneeqahabdol@gmail.com",
+  ];
+  const allowedPassword = "Yusuf14022001";
+
+  const handleSignIn = async (e: { preventDefault: () => void }) => {
     e.preventDefault(); // Prevent default form submission
+    if (!allowedEmails.includes(email)) {
+      alert("Only specific users can sign in.");
+      return;
+    }
+    if (password !== allowedPassword) {
+      alert("Incorrect password.");
+      return;
+    }
     try {
       const res = await signInWithEmailAndPassword(email, password);
       console.log({ res });
       // Clear fields after sign in
-      setEmail('');
-      setPassword('');
-      router.push('/');
+      setEmail("");
+      setPassword("");
+      router.push("/dashboard");
     } catch (error) {
       console.error(error);
+      alert("Sign in failed. Please check your credentials.");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-pink-100">
       <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md">
-        <h1 className="text-3xl font-bold text-center text-pink-600 mb-6">❤️ Sign In  ❤️</h1>
+        <h1 className="text-3xl font-bold text-center text-pink-600 mb-6">
+          ❤️ Sign In ❤️
+        </h1>
         <form onSubmit={handleSignIn} className="space-y-6">
           <div>
-            <label className="block text-pink-600 font-medium mb-2" htmlFor="email">
+            <label
+              className="block text-pink-600 font-medium mb-2"
+              htmlFor="email"
+            >
               Email
             </label>
             <input
@@ -47,7 +66,10 @@ function SignIn() {
           </div>
 
           <div>
-            <label className="block text-pink-600 font-medium mb-2" htmlFor="password">
+            <label
+              className="block text-pink-600 font-medium mb-2"
+              htmlFor="password"
+            >
               Password
             </label>
             <input
@@ -69,7 +91,7 @@ function SignIn() {
           </button>
         </form>
         <p className="mt-4 text-center text-pink-600">
-          Don't have an account? <Link href="/sign-up" className="underline text-pink-800">Sign Up</Link>
+          Only pre-approved users can sign in.
         </p>
       </div>
     </div>
