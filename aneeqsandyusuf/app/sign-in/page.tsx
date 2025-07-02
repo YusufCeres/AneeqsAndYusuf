@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useSignInWithEmailAndPassword } from "react-firebase-hooks/auth";
 import { auth } from "@/app/firebase/config";
 import { useRouter } from "next/navigation";
-//import {useSession} from 'next-auth/react'
+import { setCookie } from 'cookies-next';
 
 function SignIn() {
   const [email, setEmail] = useState("");
@@ -30,6 +30,9 @@ function SignIn() {
     try {
       const res = await signInWithEmailAndPassword(email, password);
       console.log({ res });
+      // Set cookie for auth and email
+      setCookie('firebaseAuthToken', 'true');
+      setCookie('userEmail', email);
       // Clear fields after sign in
       setEmail("");
       setPassword("");

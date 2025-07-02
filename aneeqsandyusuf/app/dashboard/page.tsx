@@ -1,9 +1,18 @@
 'use client';
 
 import Link from 'next/link';
-import { Camera, MapPin, Heart, User } from 'lucide-react';
+import { Camera, MapPin, Heart, User, MessageCircle } from 'lucide-react';
+import { deleteCookie } from 'cookies-next';
+import { useRouter } from 'next/navigation';
 
 export default function Dashboard() {
+  const router = useRouter();
+  const handleLogout = () => {
+    deleteCookie('firebaseAuthToken');
+    deleteCookie('userEmail');
+    router.push('/sign-in');
+  };
+
   return (
     <div className="min-h-screen bg-[var(--background)] text-[var(--foreground)]">
       {/* Header */}
@@ -19,6 +28,12 @@ export default function Dashboard() {
                 <User className="h-6 w-6 text-gray-500" />
                 <span className="font-medium">Aneeq & Yusuf</span>
               </div>
+              <button
+                onClick={handleLogout}
+                className="ml-4 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors"
+              >
+                Logout
+              </button>
             </div>
           </div>
         </div>
@@ -36,7 +51,7 @@ export default function Dashboard() {
         </div>
 
         {/* Navigation Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
           {/* Gallery Card - Functional */}
           <Link href="/dashboard/gallery" className="group">
             <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 overflow-hidden">
@@ -50,6 +65,32 @@ export default function Dashboard() {
                 </p>
                 <div className="flex items-center text-blue-600 dark:text-blue-400 font-medium group-hover:text-blue-700 dark:group-hover:text-blue-300">
                   <span>Explore Gallery</span>
+                  <svg className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+                <div className="mt-3">
+                  <span className="inline-block bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-xs px-2 py-1 rounded">
+                    Active
+                  </span>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          {/* Chat Card - Functional */}
+          <Link href="/dashboard/chat" className="group">
+            <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 transition-all duration-200 overflow-hidden">
+              <div className="p-8 text-center border-b border-gray-200 dark:border-gray-800">
+                <MessageCircle className="h-16 w-16 text-gray-700 dark:text-gray-300 mx-auto mb-4 group-hover:scale-105 transition-transform duration-200" />
+              </div>
+              <div className="p-6">
+                <h3 className="text-2xl font-bold mb-3">Chat</h3>
+                <p className="text-gray-600 dark:text-gray-400 mb-4">
+                  Stay connected with your private messaging space, just for you two.
+                </p>
+                <div className="flex items-center text-blue-600 dark:text-blue-400 font-medium group-hover:text-blue-700 dark:group-hover:text-blue-300">
+                  <span>Open Chat</span>
                   <svg className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
@@ -119,10 +160,14 @@ export default function Dashboard() {
         {/* Quick Stats */}
         <div className="mt-16 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 p-8 max-w-4xl mx-auto">
           <h3 className="text-2xl font-bold mb-6 text-center">Quick Overview</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
             <div className="text-center">
               <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">0</div>
               <div className="text-gray-600 dark:text-gray-400">Photos Shared</div>
+            </div>
+            <div className="text-center">
+              <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">0</div>
+              <div className="text-gray-600 dark:text-gray-400">Messages Sent</div>
             </div>
             <div className="text-center">
               <div className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">0</div>
